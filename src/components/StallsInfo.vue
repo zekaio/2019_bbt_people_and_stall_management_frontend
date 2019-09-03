@@ -191,7 +191,7 @@
                             <el-table-column label="操作" width="96" fixed="right">
                                 <template slot-scope="scope">
                                     <el-button @click="onMemberCheckIn(scope.row)" type="text">签到</el-button>
-                                    <el-button @click="onMemberDelete(scope.row)" type="text">删除</el-button>
+                                    <el-button @click="onMemberDelete(scope.row)" type="text" v-if="member_data.length<=1">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -336,7 +336,7 @@
             this.create.location, date, this.create.num,
             this.create.start_sess, this.create.end_sess);
         console.info(res);
-        if(!res) {
+        if(res && !res.error) {
             web.web.showAlert("添加摆摊成功！目前本项目已有 "+(this.sub_stalls.length+1)+" 个摆摊活动，你可继续添加。");
             this.sub_stalls = await getSubStalls(this.selected_stall);
         }
