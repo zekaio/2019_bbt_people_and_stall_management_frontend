@@ -16,6 +16,8 @@ const UpdateRoute = "/api/authorizations";
 const ScheduleRoute = "/api/stall/schedule";
 const AvatarRoute = "/api/users/avatar";
 const ScheduleImageRoute = "/api/stall/schedule/upload";
+const ScheduleUnverifyListRoute = "/api/stall/schedule/uncheck";
+const SchedulePassRoute = "/api/stall/schedule/check";
 
 // 授权信息
 var auth = {
@@ -53,7 +55,7 @@ var auth = {
             poster: ""
         }
     },
-
+    baseUrl: fetch.URL,
     getAuthHeader: () => auth.type + " " + auth.token,
 
     getHeadersObject: () => ({ Authorization: auth.getAuthHeader() }),
@@ -278,11 +280,13 @@ var auth = {
     },
     obtainSchedule: async id => {
         if (!id) id = auth.getDetailObject("user_id");
-        auth.data["schedule"]["list"] = await auth.send(
-            "GET",
-            `${ScheduleRoute}/show/${id}`
-        );
-        return auth.data["schedule"]["list"];
+        return await auth.send("GET", `${ScheduleRoute}/show/${id}`);
+    },
+    uncheckScheduleList: async () => {
+        return await auth.send("GET", ScheduleUnverifyListRoute);
+    },
+    passSchedule: async id => {
+        return await auth.send("PUT", `${SchedulePassRoute}/${id}`);
     }
 };
 

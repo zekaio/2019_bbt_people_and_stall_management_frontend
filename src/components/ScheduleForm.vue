@@ -5,6 +5,7 @@
       :cellHeight="50"
       class="schedule"
     ></schedule-table>
+    <div id="notice">注：灰色为上课时间 以及 上课周数</div>
     <el-row style="width: fit-content;" ref="form">
       <el-col style="width: fit-content; float: none;">
         <el-table
@@ -118,18 +119,6 @@ export default {
         sel: null, //选中行
         columns: [
           {
-            field: "beginWeek",
-            title: "开始周数",
-            width: 140,
-            placeholder: "填入数字:1-20"
-          },
-          {
-            field: "endWeek",
-            title: "结束周数",
-            width: 140,
-            placeholder: "填入数字:1-20"
-          },
-          {
             field: "weekday",
             title: "星期",
             width: 140,
@@ -146,6 +135,18 @@ export default {
             title: "结束节次",
             width: 140,
             placeholder: "填入节次:1-11"
+          },
+          {
+            field: "beginWeek",
+            title: "开始周数",
+            width: 140,
+            placeholder: "填入数字:1-20"
+          },
+          {
+            field: "endWeek",
+            title: "结束周数",
+            width: 140,
+            placeholder: "填入数字:1-20"
           }
         ],
         data: []
@@ -261,12 +262,11 @@ export default {
 
     async obtaineScheduleInfo() {
       let { photo, schedule } = await auth.obtainSchedule();
-      this.photo = photo;
+      this.photo = !!photo ? auth.baseUrl + photo : "";
       this.$set(this.scheduleForm, "data", this.handleScheduleRes(schedule));
     },
     // 转换响应的课程数据为前端需要的格式
     handleScheduleRes(res) {
-      console.log(res);
       let schedule = [];
       let scheduleLastIndex = -1;
       for (let weekday in res) {
@@ -300,7 +300,6 @@ export default {
           : 0;
       });
       let finalSchedule = [];
-      console.log(schedule);
       for (let i = 0; i <= scheduleLastIndex; i++) {
         if (i === 0) {
           finalSchedule.push(schedule[i]);
@@ -317,6 +316,7 @@ export default {
         } else finalSchedule.push(schedule[i]);
       }
       finalSchedule = finalSchedule.map(single => ({
+        id: generateId.get(),
         beginWeek: String(single.beginWeek),
         endWeek: String(single.endWeek),
         beginLesson: String(single.beginLesson),
@@ -326,10 +326,10 @@ export default {
       return finalSchedule;
     },
     uploadImage(res, file) {
-      console.log(res, file);
+      console.log(auth.baseUrl, "test");
+      this.photo = auth.baseUrl + res.schedule;
     },
     beforeAvatarUpload(file) {
-      console.log(file.type);
       const isValid =
         ["image/jpeg", "image/png", "image/jpg"].indexOf(file.type) >= 0;
       const isLt5M = file.size / 1024 / 1024 < 5;
@@ -350,8 +350,13 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
+}
+#notice {
+  text-align: left;
+  color: chocolate;
+  margin-bottom: 20px;
 }
 .schedule {
   margin-bottom: 20px;
@@ -364,13 +369,13 @@ export default {
   margin-right: 10px;
 }
 .main-function__bnt_upload-img:hover + .main-function__img {
-  visibility: visible;
+  display: block;
   transform: translateY(-105%);
 }
 .main-function__img {
   position: absolute;
   border-radius: 6px;
-  visibility: hidden;
+  display: none;
   width: 70%;
   z-index: 200;
 }

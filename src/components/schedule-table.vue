@@ -101,12 +101,13 @@ export default {
           );
         let current = data[col][row].join(",").trim();
         let next = row + 1 <= 10 ? data[col][row + 1].join(",").trim() : "";
-        if (current === next && row !== 10) return null;
+        if (current === next && row !== 10 && current !== "") return null;
         let count = 0;
         let preRowIndex = row - 1;
         while (
           preRowIndex >= 0 &&
-          data[col][preRowIndex].join(",").trim() === current
+          data[col][preRowIndex].join(",").trim() === current &&
+          current !== ""
         )
           preRowIndex--;
         let cellCount = row - preRowIndex;
@@ -153,6 +154,7 @@ export default {
   border: 0.5px solid #ebeef5;
   border-left: 0.5px solid transparent;
   border-top: 0.5px solid transparent;
+  padding: 0 3px;
   display: flex;
   justify-content: center;
   align-items: center;

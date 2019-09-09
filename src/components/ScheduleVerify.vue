@@ -6,7 +6,7 @@
         <el-tab-pane label="同部门" name="dept"></el-tab-pane>
       </el-tabs>
       <div id="table_content">
-        <el-table :data="page_data" height="100%" stripe border>
+        <el-table :data="page_data" stripe border>
           <el-table-column prop="name" label="姓名"></el-table-column>
           <el-table-column
             prop="sno"
@@ -20,11 +20,10 @@
             width="96"
           ></el-table-column>
           <el-table-column prop="group" label="管理层"></el-table-column>
-          <el-table-column prop="create" label="加入时间"></el-table-column>
           <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
-              <el-button @click="onDetail(scope.row)" type="text"
-                >查看</el-button
+              <el-button @click="onDetail(scope.row, scope.$index)" type="text"
+                >查看课表</el-button
               >
             </template>
           </el-table-column>
@@ -38,7 +37,8 @@
           :cellHeight="40"
           class="popover__schedule"
         ></schedule-table>
-        <img :src="photo" id="photo" />
+        <img :src="photo" id="photo" v-if="!!photo" />
+        <div id="photo" class="photo_empty" v-else>暂未上传图片哦~</div>
         <div class="main-function">
           <el-button type="success" round @click="passVerify()"
             ><i class="el-icon-check main-function__bnt-icon"></i
@@ -60,23 +60,18 @@
 
 <script>
 import scheduleTable from "../components/schedule-table";
+import auth from "../utils/auth_utils";
+import web from "../utils/web_utils";
 
 export default {
   data() {
+    web.web.checkLogin(this);
+
     return {
       verify: false,
-      page_data: [
-        {
-          id: 1,
-          sno: "201010101010",
-          name: "SuperRoot",
-          sex: "不明",
-          dept: "技术部",
-          group: "超级管理员",
-          create: "2011-07-20"
-        }
-      ],
-      main_page: "all",
+      total_data: [],
+      page_data: [],
+      main_page: "dept",
       schedule: [
         {
           beginWeek: "1",
@@ -100,21 +95,128 @@ export default {
           endLesson: "6"
         }
       ],
-      photo:
-        "https://tse3-mm.cn.bing.net/th?id=OIP.VDrsIs6hn8rs9j65DeaIoQHaE7&w=193&h=128&c=7&o=5&pid=1.7"
+      photo: "",
+      verifyingRow: -1,
+      deptName: auth.getDept()
     };
   },
   methods: {
-    async onDetail(row) {
+    async onDetail(row, index) {
+      this.verifyingRow = index;
+      if (!!row.photo || !!row.schedule) {
+        this.photo = row.photo;
+        this.schedule = row.schedule;
+        this.verify = !this.verify;
+        return;
+      }
+      let { photo, schedule } = await auth.obtainSchedule(row.id);
+      schedule = this.handleScheduleRes(schedule);
+      this.photo = !!photo ? auth.baseUrl + photo : "";
+      this.schedule = schedule;
+      row.photo = this.photo;
+      row.schedule = schedule;
       this.verify = !this.verify;
+    },
+    handleScheduleRes(res = {}) {
+      let schedule = [];
+      let scheduleLastIndex = -1;
+      for (let weekday in res) {
+        for (let lesson in res[weekday]) {
+          let freeWeeks = res[weekday][lesson];
+          for (let i = 0; i < freeWeeks.length; i++) {
+            if (i === 0 || freeWeeks[i] - 1 !== freeWeeks[i - 1]) {
+              schedule.push({
+                beginWeek: +freeWeeks[i],
+                endWeek: +freeWeeks[i],
+                beginLesson: +lesson,
+                endLesson: +lesson,
+                weekday: +weekday
+              });
+              scheduleLastIndex++;
+              continue;
+            } else schedule[scheduleLastIndex].endWeek = freeWeeks[i];
+          }
+        }
+      }
+      //
+      schedule.sort((left, right) => {
+        return left.beginWeek > right.beginWeek
+          ? 1
+          : left.endWeek > right.endWeek
+          ? 1
+          : left.weekday > right.weekday
+          ? 1
+          : left.beginLesson > right.beginLesson
+          ? 1
+          : 0;
+      });
+      let finalSchedule = [];
+      for (let i = 0; i <= scheduleLastIndex; i++) {
+        if (i === 0) {
+          finalSchedule.push(schedule[i]);
+          continue;
+        }
+        if (
+          schedule[i].beginWeek === schedule[i - 1].beginWeek &&
+          schedule[i].endWeek === schedule[i - 1].endWeek &&
+          schedule[i].weekday === schedule[i - 1].weekday &&
+          schedule[i].beginLesson - 1 === schedule[i - 1].endLesson
+        ) {
+          finalSchedule[finalSchedule.length - 1].endLesson =
+            schedule[i].endLesson;
+        } else finalSchedule.push(schedule[i]);
+      }
+      finalSchedule = finalSchedule.map(single => ({
+        beginWeek: String(single.beginWeek),
+        endWeek: String(single.endWeek),
+        beginLesson: String(single.beginLesson),
+        endLesson: String(single.endLesson),
+        weekday: String(single.weekday)
+      }));
+      return finalSchedule;
     },
     cancelVerify() {
       this.verify = !this.verify;
+      this.verifyingRow = -1;
     },
-    passVerify() {}
+    async passVerify() {
+      let id = this.page_data[this.verifyingRow].id;
+      await auth.passSchedule(id);
+      this.page_data.splice(this.verifyingRow, 1);
+      this.total_data = this.total_data.filter(item => item.id !== id);
+      this.verify = !this.verify;
+    },
+    onTabChanged({ name }, event) {
+      this.main_page = name;
+      this.getPageData();
+    },
+    handleUsers(users) {
+      return users.map(user => ({
+        id: user.id,
+        sno: user.sno,
+        name: user.detail.name,
+        sex: user.detail.sex,
+        dept: user.department.name,
+        group: user.group.name
+      }));
+    },
+    getPageData() {
+      this.page_data =
+        this.main_page === "dept"
+          ? this.total_data.filter(item => item.dept === this.deptName)
+          : this.total_data;
+    }
   },
   components: {
     scheduleTable
+  },
+
+  async mounted() {
+    if (auth.getJob() !== "部长" && auth.getJob() !== "常委")
+      this.$root.$router.push("/user");
+    let data = await auth.uncheckScheduleList();
+    this.total_data = this.handleUsers(data);
+    this.getPageData();
   }
 };
 </script>
@@ -134,6 +236,7 @@ export default {
   text-align: center;
   border-radius: 4px;
   background: rgba(192, 192, 192, 0.2);
+  overflow-y: scroll;
 }
 #popover {
   position: fixed;
@@ -177,6 +280,13 @@ export default {
   left: 0;
   right: 0;
   margin: 0 auto;
+}
+.photo_empty {
+  height: 40%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .main-function__bnt-icon {
   margin-right: 6px;
