@@ -212,7 +212,7 @@ export default {
   },
 
   async mounted() {
-    if (auth.getJob() !== "部长" && auth.getJob() !== "常委")
+    if (auth.getJob() === "主管" || auth.getJob() === "干事")
       this.$root.$router.push("/user");
     let data = await auth.uncheckScheduleList();
     this.total_data = this.handleUsers(data);

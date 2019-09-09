@@ -26,6 +26,7 @@ var auth = {
     expires_in: 0,
 
     active: false,
+    enoughPower: false,
     temp_email: "",
 
     data: {
@@ -151,6 +152,11 @@ var auth = {
         auth.setup(res);
         if ((res = res && !res.error)) await data.getData();
         auth.active = res && auth.data.email;
+        auth.enoughPower =
+            auth.data.group &&
+            auth.data.group.name &&
+            auth.data.group.name !== "主管" &&
+            auth.data.group.name !== "干事";
         return res;
     },
     // 删除用户
@@ -215,6 +221,7 @@ var auth = {
     // 登出
     logout: () => {
         auth.active = false;
+        auth.enoughPower = false;
         localStorage.removeItem("token");
     },
 

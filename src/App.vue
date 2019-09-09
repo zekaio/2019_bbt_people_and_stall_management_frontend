@@ -35,17 +35,19 @@
                   <el-menu-item index="/members">人员概览</el-menu-item>
                   <el-menu-item index="/library">梯友库</el-menu-item>
                   <el-menu-item index="/search">查找人员</el-menu-item>
-                  <el-menu-item index="/create">添加人员</el-menu-item>
+                  <el-menu-item index="/create" v-if="auth.enoughPower"
+                    >添加人员</el-menu-item
+                  >
                   <el-menu-item index="/recycle">回收站</el-menu-item>
                 </el-submenu>
-                <el-submenu index="3">
+                <el-submenu index="3" v-if="auth.enoughPower">
                   <template slot="title">
                     <i class="el-icon-date"></i>
                     <span>课表管理</span>
                   </template>
                   <el-menu-item index="/schedule_verify">审批课表</el-menu-item>
                 </el-submenu>
-                <el-submenu index="4">
+                <el-submenu index="4" v-if="auth.enoughPower">
                   <template slot="title">
                     <i class="el-icon-location"></i>
                     <span>摆摊管理</span>
@@ -101,7 +103,8 @@ export default {
     name: auth.getNameForTitle,
     select,
     logout
-  }
+  },
+  computed: {}
 };
 </script>
 
