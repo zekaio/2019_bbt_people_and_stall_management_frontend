@@ -68,6 +68,7 @@
                     <el-row :gutter="20" class="detail-grid-content">
                         <el-col :span="8"><div>共 {{sub_stalls.length}} 个摆摊内容</div></el-col>
                         <el-col :span="16">
+                            <el-button id="export_excel" @click="exportExcel" type="primary">导出表格</el-button>
                             <el-button id="add_stall" @click="add_substall=true" type="primary">添加摆摊</el-button>
                         </el-col>
                     </el-row>
@@ -208,6 +209,7 @@
 <script>
     import stall from "../utils/stall_utils";
     import web from '../utils/web_utils';
+    import fetch from "../utils/fetch_utils";
     import admin from '../utils/admin_utils';
     import auth from '../utils/auth_utils';
     import data from '../utils/data_utils';
@@ -427,7 +429,7 @@
         if(row.role === '是') {
             let res = await stall.deleteSubStallDuty(id);
             if(!res) {
-                web.web.showAlert("已删除本摆摊负责人！")
+                web.web.showAlert("已删除本摆摊负责人！");
                 if(res = await stall.getSubStallMember(id)) {
                     this.member_data = makeMemberData(res);
                     this.no_duty = !this.member_data.some((data) => data.role === '是');
@@ -464,6 +466,11 @@
                 this.no_duty = !this.member_data.some((data) => data.role === '是');
             }
         }
+    }
+
+    async function exportExcel() {
+        let res = await stall.getExportPath(this.selected_stall.id);
+        if(res && !res.error) window.open(fetch.URL + res.path);
     }
 
     export default {
@@ -510,7 +517,7 @@
             onEditStallConfirm,
             onDetail, onDelete,
             onMemberCheckIn, onMemberDelete,
-            addDuty, randomMember
+            addDuty, randomMember, exportExcel
         }
     }
 </script>
@@ -622,6 +629,11 @@
 
     #add_stall {
         float: right;
+        margin-left: 4px;
+    }
+    #export_excel {
+        float: right;
+        margin-left: 4px;
     }
 
     .tips {

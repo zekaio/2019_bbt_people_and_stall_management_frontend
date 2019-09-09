@@ -13,6 +13,8 @@ const DeleteDutySubStallRoute = "/api/stall/task/deleteadmin";
 const DeleteSubStallRoute = "/api/stall/task/delete";
 const CreateSubStallRoute = "/api/stall/task/new";
 
+const ExportSubStallRoute = "/api/stall/export";
+
 const RandomSubStallRoute = "/api/stall/task/create";
 
 const CheckInSubStallRoute = "/api/stall/task/check";
@@ -73,6 +75,9 @@ var stall = {
 
     checkInSubStall: async (id, user_id) =>
         await stall.oper("PUT", CheckInSubStallRoute, id, {user_id}),
+
+    getExportPath: async (id) =>
+        await stall.oper("GET", ExportSubStallRoute, id),
 
     createFirstWeekRoute: async (year, term, date) =>
         await stall.oper("POST", CreateFirstWeekRoute, undefined, {year, term, date}),
