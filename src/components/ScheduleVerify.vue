@@ -34,7 +34,7 @@
       <div id="popover" v-show="verify">
         <schedule-table
           :scheduleList="schedule"
-          :cellHeight="40"
+          :cellHeight="45"
           class="popover__schedule"
         ></schedule-table>
         <img :src="photo" id="photo" v-if="!!photo" />

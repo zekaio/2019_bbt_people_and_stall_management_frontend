@@ -100,6 +100,11 @@ export default {
             >{`第${row + 1}节`}</div>
           );
         let current = data[col][row].join(",").trim();
+        let hasFormatError = false 
+        for(let i = 1; i < data[col][row].length; i ++)
+          if(+data[col][row][i].split("-")[0] <= +data[col][row][i-1].split("-").splice(-1)[0]){
+            hasFormatError = true; break;
+        }
         let next = row + 1 <= 10 ? data[col][row + 1].join(",").trim() : "";
         if (current === next && row !== 10 && current !== "") return null;
         let count = 0;
@@ -112,7 +117,7 @@ export default {
           preRowIndex--;
         let cellCount = row - preRowIndex;
         let className =
-          "col__content " + (!!current ? "col__content_unavailable" : "");
+          "col__content " + (!!current ? "col__content_unavailable " : "") + (hasFormatError ? "col__content_format_error": "");
         return (
           <div
             style={{
@@ -164,5 +169,8 @@ export default {
 }
 .col:first-child > div {
   border-left: 0.5px solid #ebeef5 !important;
+}
+.col__content_format_error{
+  background: #F56C6C;
 }
 </style>

@@ -2,10 +2,12 @@
   <div>
     <schedule-table
       :scheduleList="scheduleForm.data"
-      :cellHeight="50"
+      :cellHeight="65"
       class="schedule"
     ></schedule-table>
-    <div id="notice">注：灰色为上课时间 以及 上课周数</div>
+    <div id="notice">
+      注：灰色为上课时间以及上课周数， 红色为表格周数有误（需修改）
+    </div>
     <el-row style="width: fit-content;" ref="form">
       <el-col style="width: fit-content; float: none;">
         <el-table
@@ -242,8 +244,13 @@ export default {
       for (let i of this.scheduleForm.data) {
         if (i.isSet) return web.web.showAlert("请先保存当前编辑项");
       }
+      if (
+        document.getElementsByClassName("col__content_format_error").length > 0
+      )
+        return web.web.showAlert(
+          "表格中含有错误周数，具体看课表图中的红色单元格！"
+        );
       let arr = [];
-      console.log(this.scheduleForm.data);
       this.scheduleForm.data
         .filter(single => (single._temporary ? false : true))
         .forEach(single => {
