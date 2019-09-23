@@ -335,6 +335,7 @@ export default {
     uploadImage(res, file) {
       console.log(auth.baseUrl, "test");
       this.photo = auth.baseUrl + res.schedule;
+      web.web.showAlert("课表图片 上传/更新 成功");
     },
     beforeAvatarUpload(file) {
       const isValid =

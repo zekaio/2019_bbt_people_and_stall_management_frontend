@@ -261,22 +261,24 @@ export default {
 }
 
 #popover .popover__schedule {
-  width: 47%;
+  width: 48%;
   background: white;
   border-radius: 6px;
   overflow: hidden;
   margin-left: 2%;
-  margin-top: -20vh;
+  margin-top: -10vh;
 }
 #photo {
   width: 48%;
   border-radius: 6px;
-  margin-top: -20vh;
+  margin-top: -10vh;
   margin-left: 1%;
+  max-height: 85%;
+  object-fit: contain;
 }
 .main-function {
   position: absolute;
-  bottom: 20vh;
+  bottom: 5vh;
   left: 0;
   right: 0;
   margin: 0 auto;

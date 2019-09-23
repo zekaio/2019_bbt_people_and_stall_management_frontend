@@ -1,31 +1,34 @@
+import web from "./web_utils";
 
-import web from './web_utils';
-
-const URL = "/host";//http://localhost:8000";
+const URL = "/2019/staff-management/backend"; //http://localhost:8000";
 
 var send = async (method, url, data, headers) => {
     switch (method.toUpperCase()) {
-        case "POST": return await post(url, data, headers);
-        case "GET": return await get(url, data, headers);
-        case "PUT": return await put(url, data, headers);
-        case "DELETE": return await del(url, data, headers);
+        case "POST":
+            return await post(url, data, headers);
+        case "GET":
+            return await get(url, data, headers);
+        case "PUT":
+            return await put(url, data, headers);
+        case "DELETE":
+            return await del(url, data, headers);
     }
-    return {error: true};
+    return { error: true };
 };
 
 var config = (method, data, headers) => {
     headers = headers || {};
-    headers['Content-Type'] = "application/json";
-    var res = {method, headers};
-    if(data) res['body'] = JSON.stringify(data);
+    headers["Content-Type"] = "application/json";
+    var res = { method, headers };
+    if (data) res["body"] = JSON.stringify(data);
     return res;
 };
 
 var get = async (url, data, headers) => {
-    if(data){
+    if (data) {
         var arr = [];
-        for(var key in data) arr.push(key+'='+data[key]);
-        url += '?'+arr.join("&");
+        for (var key in data) arr.push(key + "=" + data[key]);
+        url += "?" + arr.join("&");
     }
     return await _send(url, config("GET", null, headers));
 };
@@ -41,14 +44,17 @@ var del = async (url, data, headers) =>
 
 var _send = async (url, config) => {
     try {
-        let res = await fetch(URL+url, config);
-        console.info("res of "+url,config," → ",res);
+        let res = await fetch(URL + url, config);
+        console.info("res of " + url, config, " → ", res);
         var json = null; // 尝试读取数据，若失败，则跳过
-        try{ json = await res.json(); } catch (e) {}
+        try {
+            json = await res.json();
+        } catch (e) {}
         // 如果状态正确，返回数据
-        console.info(json); if(res.ok) return json;
+        console.info(json);
+        if (res.ok) return json;
         throw json ? json.message : res.statusText;
-    } catch(e) {
+    } catch (e) {
         web.web.showAlert(e);
         console.error(e);
         return { error: true };
@@ -56,5 +62,10 @@ var _send = async (url, config) => {
 };
 
 export default {
-    send, get, post, put, del, URL
-}
+    send,
+    get,
+    post,
+    put,
+    del,
+    URL
+};
