@@ -32,6 +32,7 @@ var data = {
 
     sexs: ['男','女','不明'],
     politics: ['群众','共青团员','中共预备党员','中共党员','其他'],
+    campus: ['大学城校区', '五山校区', '国际校区'],
     colleges: [], colleges_selections: [],
     groups: [], groups_selections: [],
     depts: [], depts_selections: [],
