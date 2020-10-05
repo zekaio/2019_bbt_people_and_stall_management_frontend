@@ -39,6 +39,7 @@
                     {field: "宿舍", value: auth.getDorm()},
                     {field: "手机号", value: auth.getMobile()},
                     {field: "短号", value: auth.getShortMobile()},
+                    {field: "校区", value: auth.getCampus()},
                     {field: "学院", value: auth.getCollege()},
                     {field: "专业", value: auth.getMajor()},
                     {field: "班级", value: auth.getClass()},

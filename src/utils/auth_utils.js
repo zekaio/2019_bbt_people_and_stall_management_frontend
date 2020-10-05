@@ -9,7 +9,7 @@ const ResetRoute2 = "/api/user/update/password";
 const SetEmailCodeRoute = "/api/user/email/captcha";
 const SetEmailRoute = "/api/user/email";
 const OperRoute = "/api/user";
-const CreateRoute = "api/users";
+const CreateRoute = "/api/users";
 const RecyRoute = "/api/users/recycle";
 const EditRoute = "/api/users/detail";
 const UpdateRoute = "/api/authorizations";
@@ -49,7 +49,8 @@ var auth = {
             college_id: 0,
             created_at: "",
             updated_at: "",
-            college: null
+            college: null,
+            campus: ""
         },
         schedule: {
             list: [],
@@ -82,6 +83,7 @@ var auth = {
     getDormRoom: () => auth.getDetail("room"),
     getDorm: () =>
         (auth.getDormBulid() || "") + "-" + (auth.getDormRoom() || ""),
+    getCampus: () => auth.getDetail("campus"),
     getMajor: () => auth.getDetail("major"),
     getClass: () => auth.getDetail("class"),
     getBirth: () => auth.getDetail("birth"),

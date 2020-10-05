@@ -1,7 +1,7 @@
 <template>
     <div>
         <transition name="el-fade-in-linear">
-            <div id="login_content" v-show="!logined">>
+            <div id="login_content" v-show="!logined">
                 <h1>登陆</h1>
                 <el-row :gutter="20" class="grid-content bg-purple">
                     <el-col :span="4"><div>学号</div></el-col>

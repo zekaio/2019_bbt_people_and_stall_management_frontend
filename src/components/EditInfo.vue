@@ -163,6 +163,7 @@ function updateDetail() {
     detail.shortMobile = auth.getShortMobile();
     detail.qq = auth.getQQ();
     detail.weibo = auth.getWeibo();
+    detail.campus = auth.getCampus();
 }
 
 // 修改信息校验
