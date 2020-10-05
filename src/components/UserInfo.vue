@@ -8,13 +8,13 @@
                 </div>
             </el-collapse-item>
             <el-collapse-item class="item" title="详细信息" name="2">
-                <el-row :gutter="20" class="grid-content" v-for="item in detail">
+                <el-row :gutter="20" class="grid-content" v-for="(item, index) in detail" :key="index">
                     <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                     <el-col :span="16"><div>{{item.value}}</div></el-col>
                 </el-row>
             </el-collapse-item>
             <el-collapse-item class="item" title="部门信息" name="3">
-                <el-row :gutter="20" class="grid-content" v-for="item in department">
+                <el-row :gutter="20" class="grid-content" v-for="(item, index) in department" :key="index">
                     <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                     <el-col :span="16"><div>{{item.value}}</div></el-col>
                 </el-row>

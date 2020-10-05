@@ -38,7 +38,7 @@
                     </div>
                 </el-collapse-item>
                 <el-collapse-item class="item" title="详细信息" name="2">
-                    <el-row :gutter="20" class="detail-grid-content" v-for="item in detail_data.items">
+                    <el-row :gutter="20" class="detail-grid-content" v-for="(item, index) in detail_data.items" :key="index">
                         <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="16"><div>{{item.value}}</div></el-col>
                     </el-row>

@@ -1,6 +1,7 @@
 import web from "./web_utils";
 
-const URL = "/2019/staff-management/backend"; //http://localhost:8000";
+// const URL = "/2019/staff-management/backend"; //http://localhost:8000";
+const URL = "http://localhost:8000";
 
 var send = async (method, url, data, headers) => {
     switch (method.toUpperCase()) {
@@ -21,6 +22,8 @@ var config = (method, data, headers) => {
     headers["Content-Type"] = "application/json";
     var res = { method, headers };
     if (data) res["body"] = JSON.stringify(data);
+    res['mode'] = 'cors';
+    console.log(res)
     return res;
 };
 

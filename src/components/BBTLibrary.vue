@@ -3,7 +3,7 @@
         <transition name="el-zoom-in-center">
             <el-collapse id="main_content" v-model="active_tags" v-show="!detail && !edit">
                 <el-collapse-item class="item" title="梯友库查询" name="1">
-                    <el-row :gutter="20" class="grid-content bg-purple" v-for="item in query_items">
+                    <el-row :gutter="20" class="grid-content bg-purple" v-for="(item, index) in query_items" :key="index">
                         <el-col :span="4"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="15"><div>
                             <el-select v-bind:id="item.key+'_input'" v-model="query_data[item.key]"
@@ -65,7 +65,7 @@
                     </div>
                 </el-collapse-item>
                 <el-collapse-item class="item" title="详细信息" name="2">
-                    <el-row :gutter="20" class="detail-grid-content" v-for="item in detail_data.items">
+                    <el-row :gutter="20" class="detail-grid-content" v-for="(item, index) in detail_data.items" :key="index">
                         <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="16"><div>{{item.value}}</div></el-col>
                     </el-row>
@@ -85,7 +85,7 @@
                         <div class="name">{{detail_data.name}}<br><span class="job">{{detail_data.dept}}</span></div>
                     </div>
                 </el-row>
-                <el-row :gutter="20" class="edit-grid-content bg-purple" v-for="item in edit_items">
+                <el-row :gutter="20" class="edit-grid-content bg-purple" v-for="(item, index) in edit_items" :key="index">
                     <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                     <el-col :span="16"><div>
                         <el-select v-bind:id="item.key+'_input'" v-model="detail_data[item.key]"

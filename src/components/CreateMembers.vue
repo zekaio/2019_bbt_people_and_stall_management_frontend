@@ -24,7 +24,7 @@
                 </el-row>
             </el-collapse-item>
             <h4>添加的成员类别：</h4>
-            <el-row :gutter="20" class="out-grid-content grid-content" v-for="item in create_items">
+            <el-row :gutter="20" class="out-grid-content grid-content" v-for="(item, index) in create_items" :key="index">
                 <el-col :span="8"><div>{{item.field}}</div></el-col>
                 <el-col :span="16"><div>
                     <el-select v-bind:id="item.key+'_input'" v-model="create_pos[item.key]"

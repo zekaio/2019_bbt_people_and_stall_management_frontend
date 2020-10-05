@@ -2,7 +2,7 @@
     <div>
         <transition name="el-zoom-in-center">
             <div id="main_content" v-show="!detail && !edit">
-                <el-card class="box-card" v-for="stall in stalls">
+                <el-card class="box-card" v-for="(stall, index) in stalls" :key="index">
                     <div slot="header" class="clearfix">
                         <span>{{stall.name}}</span>
                         <el-button class="oper_button" type="text"
@@ -12,7 +12,7 @@
                         <el-button class="oper_button" type="text"
                                    @click="stall.onDetail">查看详情</el-button>
                     </div>
-                    <el-row :gutter="20" class="grid-content" v-for="item in stall.detail">
+                    <el-row :gutter="20" class="grid-content" v-for="(item, index) in stall.detail" :key="index">
                         <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="16"><div>{{item.value}}</div></el-col>
                     </el-row>
@@ -52,7 +52,7 @@
                         <el-col :span="8"><div><b>项目名称</b></div></el-col>
                         <el-col :span="16"><div>{{selected_stall.name}}</div></el-col>
                     </el-row>
-                    <el-row :gutter="20" class="detail-grid-content" v-for="item in selected_stall.detail">
+                    <el-row :gutter="20" class="detail-grid-content" v-for="(item, index) in selected_stall.detail" :key="index">
                         <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="16"><div>{{item.value}}</div></el-col>
                     </el-row>
@@ -158,7 +158,7 @@
         <transition name="el-zoom-in-center">
             <el-collapse id="sub_stall_detail_content" v-model="active_tags" v-show="sub_stall_detail">
                 <el-collapse-item title="摆摊信息" name="1">
-                    <el-row :gutter="20" class="detail-grid-content" v-for="item in selected_sub_stall_detail">
+                    <el-row :gutter="20" class="detail-grid-content" v-for="(item, index) in selected_sub_stall_detail" :key="index">
                         <el-col :span="8"><div><b>{{item.field}}</b></div></el-col>
                         <el-col :span="16"><div>{{item.value}}</div></el-col>
                     </el-row>

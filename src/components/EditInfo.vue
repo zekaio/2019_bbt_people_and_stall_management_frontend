@@ -22,7 +22,7 @@
             </el-collapse-item>
             <el-collapse-item class="item" title="修改信息" name="2">
                 <div class="tips">注：红色为必填项，黑色为选填项</div>
-                <el-row :gutter="20" class="grid-content" v-for="item in items">
+                <el-row :gutter="20" class="grid-content" v-for="(item, index) in items" :key="index">
                     <el-col :span="8"><div v-bind:class="{ must: item.must }"><b>{{item.field}}</b></div></el-col>
                     <el-col :span="16"><div>
                         <el-input v-bind:id="item.key+'_input'" v-model="detail[item.key]"
@@ -37,8 +37,8 @@
 
                         <el-radio-group v-bind:id="item.key+'_input'" v-model="detail[item.key]"
                                         @focus="onFocus" v-if="item.type==='radio'">
-                            <el-radio v-for="opt in item.options"
-                                      :label="opt">{{opt}}</el-radio>
+                            <el-radio v-for="(opt, index) in item.options"
+                                      :label="opt" :key="index">{{opt}}</el-radio>
                         </el-radio-group>
 
                         <el-select v-bind:id="item.key+'_input'" v-model="detail[item.key]"
