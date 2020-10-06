@@ -409,6 +409,19 @@
                             type="primary"
                             >随机分配成员</el-button
                         >
+                        <el-select
+                            id="random_member_role"
+                            v-model="random_member_role"
+                            placeholder="成员职位"
+                        >
+                            <el-option
+                                v-for="opt in ['干事', '主管']"
+                                :key="opt"
+                                :label="opt"
+                                :value="opt"
+                            >
+                            </el-option>
+                        </el-select>
                     </el-row>
                     <div class="table_content">
                         <el-table :data="member_data" stripe border>
@@ -768,7 +781,8 @@ async function onMemberCheckIn(row) {
 
 async function randomMember() {
     let id = this.selected_sub_stall.id;
-    var res = await stall.randomSubStall(id);
+    let group_id = this.random_member_role == "干事" ? 6 : 5;
+    var res = await stall.randomSubStall(id, group_id);
     if (!res) {
         web.web.showAlert("随机添加人员成功！");
         if ((res = await stall.getSubStallMember(id))) {
@@ -807,6 +821,8 @@ export default {
             duty_sno: "",
             no_duty: true,
             member_data: [],
+
+            random_member_role: "干事",
 
             create: {
                 sub_name: "",

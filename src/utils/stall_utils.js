@@ -95,8 +95,11 @@ var stall = {
             end
         }),
 
-    randomSubStall: async task_id =>
-        await stall.oper("POST", RandomSubStallRoute, undefined, { task_id }),
+    randomSubStall: async (task_id, group_id) =>
+        await stall.oper("POST", RandomSubStallRoute, undefined, {
+            task_id,
+            group_id
+        }),
 
     checkInSubStall: async (id, user_id) =>
         await stall.oper("PUT", CheckInSubStallRoute, id, { user_id }),
