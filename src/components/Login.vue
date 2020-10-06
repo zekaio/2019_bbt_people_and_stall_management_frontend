@@ -282,9 +282,9 @@
         margin: 0;
     }
 
-    .bg-purple {
-        /*background: rgba(128,128,128,0.1);*/
-    }
+    /* .bg-purple {
+        background: rgba(128,128,128,0.1);
+    } */
     .grid-content {
         /*height: 64px;*/
         line-height: 64px;

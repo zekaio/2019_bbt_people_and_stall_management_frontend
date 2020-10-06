@@ -271,7 +271,7 @@ export default {
                     type: "text",
                     key: "dormitory",
                     must: false,
-                    max: 5
+                    max: 20
                 },
                 {
                     field: "宿舍号",
