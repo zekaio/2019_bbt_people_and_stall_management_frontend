@@ -23,7 +23,6 @@ var config = (method, data, headers) => {
     var res = { method, headers };
     if (data) res["body"] = JSON.stringify(data);
     res['mode'] = 'cors';
-    console.log(res)
     return res;
 };
 
