@@ -1,7 +1,7 @@
 import web from "./web_utils";
 
-// const URL = "/2019/staff-management/backend"; //http://localhost:8000";
-const URL = "http://localhost:8000";
+const URL = "/2020/staff-management/backend"; //http://localhost:8000";
+// const URL = "http://localhost:8000";
 
 var send = async (method, url, data, headers) => {
     switch (method.toUpperCase()) {

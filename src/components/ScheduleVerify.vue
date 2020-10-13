@@ -211,8 +211,8 @@ export default {
                 sno: user.sno,
                 name: user.detail.name,
                 sex: user.detail.sex,
+                campus: user.detail.campus,
                 dept: user.department.name,
-                campus: user.department.campus,
                 group: user.group.name
             }));
         },
