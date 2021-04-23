@@ -22,7 +22,7 @@ var config = (method, data, headers) => {
     headers["Content-Type"] = "application/json";
     var res = { method, headers };
     if (data) res["body"] = JSON.stringify(data);
-    res['mode'] = 'cors';
+    res["mode"] = "cors";
     return res;
 };
 

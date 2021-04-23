@@ -50,7 +50,8 @@ var auth = {
             created_at: "",
             updated_at: "",
             college: null,
-            campus: ""
+            campus: "",
+            sno: ""
         },
         schedule: {
             list: [],
@@ -77,6 +78,7 @@ var auth = {
 
     getName: () => auth.getDetailObject("name") /* || '未登录'*/,
     getNameForTitle: () => auth.getName() || "未登录",
+    getSno: () => auth.getDetailObject("sno"),
 
     getSex: () => auth.getDetail("sex"),
     getDormBulid: () => auth.getDetail("dormitory"),
