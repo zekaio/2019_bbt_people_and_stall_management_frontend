@@ -19,7 +19,7 @@ export default {
     },
     unionSchedule(data) {
       for (let i = 0; i < 7; i++)
-        for (let j = 0; j < 11; j++) {
+        for (let j = 0; j < 12; j++) {
           let lessonShouldWeeks = data[i][j];
           let preRange;
           for (let z = 0; z < lessonShouldWeeks.length; z++) {
@@ -49,7 +49,7 @@ export default {
       let table = [];
       for (let i = 0; i < 7; i++) {
         let singleDay = [];
-        for (let j = 0; j < 11; j++) singleDay.push([]);
+        for (let j = 0; j < 12; j++) singleDay.push([]);
         table.push(singleDay);
       }
       let originData = this.scheduleList.sort((left, right) => {

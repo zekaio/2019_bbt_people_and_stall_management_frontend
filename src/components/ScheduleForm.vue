@@ -179,13 +179,13 @@ export default {
                         field: "beginLesson",
                         title: "开始节次",
                         width: 140,
-                        placeholder: "填入节次:1-11"
+                        placeholder: "填入节次:1-12"
                     },
                     {
                         field: "endLesson",
                         title: "结束节次",
                         width: 140,
-                        placeholder: "填入节次:1-11"
+                        placeholder: "填入节次:1-12"
                     },
                     {
                         field: "beginWeek",
@@ -261,8 +261,8 @@ export default {
                     !data["beginLesson"] ||
                     !data["endLesson"] ||
                     +data["beginLesson"] > +data["endLesson"] ||
-                    +data["beginLesson"] > 11 ||
-                    +data["endLesson"] > 11 ||
+                    +data["beginLesson"] > 12 ||
+                    +data["endLesson"] > 12 ||
                     +data["beginLesson"] < 1 ||
                     +data["endLesson"] < 1
                 ) {
